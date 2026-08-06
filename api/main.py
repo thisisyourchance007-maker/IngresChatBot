@@ -689,6 +689,46 @@ async def clear_cache():
     _response_cache.clear()
     return {"status": "cleared", "entries_removed": count}
 
+class DiagramRequest(BaseModel):
+    query: str
+    text_context: Optional[str] = ""
+
+@app.post("/api/generate-diagram", tags=["Chat"])
+async def generate_diagram(req: DiagramRequest):
+    """
+    Generates a Mermaid.js visual diagram (flowchart, pie chart, or mindmap)
+    explaining groundwater concepts or district distributions using Gemini AI.
+    """
+    prompt = f"""You are a diagram generator expert for INGRES India Groundwater system.
+Generate a valid Mermaid.js diagram (e.g. piechart, flowchart TD, or mindmap) for the following topic/data:
+
+Topic/Query: {req.query}
+Data Context: {req.text_context[:1000] if req.text_context else 'India Groundwater Resource Estimation'}
+
+Rules:
+1. Output ONLY a valid Mermaid code block enclosed in ```mermaid and ```.
+2. Keep labels clean, concise, and free of special illegal characters.
+3. For distributions or proportions, use `pie title ...`.
+4. For processes, comparisons, or categorizations, use `graph TD` or `flowchart TD`.
+5. Do NOT include markdown text outside the code block."""
+
+    try:
+        raw = await _call_gemini_async(prompt, timeout=20)
+        cleaned = raw.strip()
+        if "```mermaid" in cleaned:
+            cleaned = cleaned.split("```mermaid")[1].split("```")[0].strip()
+        elif "```" in cleaned:
+            cleaned = cleaned.split("```")[1].split("```")[0].strip()
+        return {"status": "success", "mermaid_code": cleaned, "raw": raw}
+    except Exception as e:
+        log.error(f"Diagram generation error: {e}")
+        fallback = """pie title Groundwater Stage Breakdown
+    "Safe (<70%)" : 421
+    "Semi-Critical (70-90%)" : 98
+    "Critical (90-100%)" : 45
+    "Over-Exploited (>100%)" : 73"""
+        return {"status": "fallback", "mermaid_code": fallback, "error": str(e)}
+
 # ── Dev server ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
