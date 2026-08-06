@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>INGRES Groundwater Intelligence System</title>
-<meta name="description" content="India Groundwater Resource Estimation System (INGRES) Data & AI Intelligence Platform">
+<meta name="description" content="India Groundwater Resource Estimation System (INGRES) Data, Image Diagrams & AI Documentary Video Studio">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💧</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +19,7 @@
   --border-color: rgba(255, 255, 255, 0.08);
   --accent-cyan: #38bdf8;
   --accent-blue: #3b82f6;
+  --accent-purple: #a855f7;
   --cat-safe: #10b981;
   --cat-semi: #f59e0b;
   --cat-crit: #f97316;
@@ -106,7 +107,7 @@ aside {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  overflow-y: auto;
+  overflow-y_auto;
 }
 .aside-title {
   font-size: 11px;
@@ -274,6 +275,7 @@ main {
   align-items: center;
   gap: 8px;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 .act-btn {
   background: var(--bg-card);
@@ -295,9 +297,18 @@ main {
   border-color: rgba(56, 189, 248, 0.3);
   color: var(--accent-cyan);
 }
-.act-btn.diagram-btn:hover { background: rgba(56, 189, 248, 0.2); color: #fff; }
+.act-btn.video-btn {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #c084fc;
+}
+.act-btn.video-btn:hover {
+  background: rgba(168, 85, 247, 0.25);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+}
 
-/* AI Diagram Image Card (Generated via gemini-3.1-flash-lite-image) */
+/* AI Diagram Image Card */
 .diagram-image-card {
   margin-top: 14px;
   background: #111827;
@@ -327,6 +338,122 @@ main {
   height: auto;
   display: block;
   margin: 0 auto;
+}
+
+/* 🎬 AI Documentary Video Explainer Studio Player Card */
+.video-studio-card {
+  margin-top: 14px;
+  background: #0d1322;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: fadeIn 0.4s ease-out;
+}
+.video-studio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 14px;
+}
+.video-studio-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.video-model-tag {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+/* Cinematic Video Reel Screen */
+.cinema-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #050811;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+}
+.cinema-screen-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.15) 0%, rgba(11, 15, 25, 0.95) 80%);
+  z-index: 0;
+}
+.visual-prompt-overlay {
+  position: relative;
+  z-index: 2;
+  font-size: 11px;
+  color: var(--accent-cyan);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 90%;
+}
+.subtitle-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  color: #ffeb3b;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 235, 59, 0.3);
+  margin: 0 auto;
+  max-width: 90%;
+  letter-spacing: 0.02em;
+}
+
+/* Video Player Controls */
+.video-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+.scene-tabs {
+  display: flex;
+  gap: 6px;
+}
+.scene-tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.scene-tab-btn.active {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: #c084fc;
+  color: #fff;
+  font-weight: 600;
 }
 
 /* Typing Row */
@@ -378,6 +505,7 @@ main {
 }
 .chip:hover { background: #374151; border-color: var(--accent-cyan); }
 .chip.diagram-chip { background: rgba(56, 189, 248, 0.1); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3); }
+.chip.video-chip { background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.3); }
 
 /* Input Panel */
 .input-panel {
@@ -472,7 +600,7 @@ main {
       <div class="brand-icon">💧</div>
       <div>
         <div class="brand-name">INGRES AI</div>
-        <div class="brand-sub">India Groundwater Intelligence System</div>
+        <div class="brand-sub">India Groundwater Intelligence & Video Studio</div>
       </div>
     </div>
     <div class="status-pill">
@@ -515,8 +643,8 @@ main {
     <div class="chat-viewport" id="chatViewport">
       
       <div class="welcome-hero" id="welcomeHero">
-        <h2>INGRES Groundwater Intelligence</h2>
-        <p>Analyze district-wise groundwater data across India or request custom AI visual diagram charts generated via Gemini Flash Image AI.</p>
+        <h2>INGRES Groundwater Intelligence Studio</h2>
+        <p>Analyze district-wise groundwater data, generate AI visual diagram images (`gemini-3.1-flash-lite-image`), or produce AI Documentary Video Explainers (`gemini-omni-flash-preview`).</p>
       </div>
 
     </div>
@@ -533,20 +661,20 @@ main {
       <button class="chip" onclick="sendQuery('What is the groundwater status in Punjab?')">📍 Punjab status</button>
       <button class="chip" onclick="sendQuery('Which states have the highest stage of groundwater development?')">📊 Top stressed states</button>
       <button class="chip" onclick="sendQuery('Which districts are safe in Andhra Pradesh?')">🟢 Safe districts in AP</button>
-      <button class="chip" onclick="sendQuery('Compare groundwater status of Bihar and Uttar Pradesh')">⚖️ Bihar vs UP</button>
-      <button class="chip diagram-chip" onclick="sendQuery('Generate a diagram showing Punjab vs Haryana groundwater extraction')">🎨 Generate Diagram Image: Punjab vs Haryana</button>
+      <button class="chip diagram-chip" onclick="sendQuery('Generate a diagram showing Punjab vs Haryana groundwater extraction')">🎨 Generate AI Diagram Image</button>
+      <button class="chip video-chip" onclick="sendQuery('Generate a video documentary explainer about Punjab groundwater depletion')">🎬 Generate AI Video Documentary (gemini-omni-flash-preview)</button>
     </div>
 
     <!-- Input Panel -->
     <div class="input-panel">
       <div class="input-box">
-        <textarea id="userInput" rows="1" placeholder="Ask about groundwater availability, district data, or request a visual diagram image…" maxlength="1000"></textarea>
+        <textarea id="userInput" rows="1" placeholder="Ask a question, request a diagram image, or generate an AI documentary video..." maxlength="1000"></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send">
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
       </div>
       <div class="input-note">
-        Press <kbd style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:3px;color:#fff">Enter</kbd> to send • Powered by Gemini 3.5 & gemini-3.1-flash-lite-image
+        Powered by Gemini 3.5 • gemini-3.1-flash-lite-image • gemini-omni-flash-preview
       </div>
     </div>
 
@@ -628,7 +756,6 @@ function appendMessage(text, isUser) {
   
   let formatted = isUser ? escapeHtml(text) : marked.parse(text);
   
-  // Format Category Pills cleanly
   if (!isUser) {
     formatted = formatted
       .replace(/Over-Exploited/g, '<span class="status-pill-tag over">🔴 Over-Exploited</span>')
@@ -639,9 +766,9 @@ function appendMessage(text, isUser) {
 
   const actions = !isUser ? `
     <div class="msg-actions">
-      <button class="act-btn" onclick="copyText('${msgId}')">📋 Copy</button>
-      <button class="act-btn diagram-btn" onclick="generateDiagramImage('${msgId}')">🎨 Generate AI Diagram Image</button>
-      <button class="act-btn" onclick="speakText('${msgId}')">🔊 Read</button>
+      <button class="act-btn" onclick="copyText('${msgId}')">📋 Copy Text</button>
+      <button class="act-btn diagram-btn" onclick="generateDiagramImage('${msgId}')">🎨 AI Diagram Image</button>
+      <button class="act-btn video-btn" onclick="generateExplainerVideo('${msgId}')">🎬 AI Explainer Video (gemini-omni-flash-preview)</button>
     </div>` : '';
 
   row.innerHTML = `
@@ -649,7 +776,7 @@ function appendMessage(text, isUser) {
     <div class="message-content">
       <div class="bubble" id="${msgId}">${formatted}</div>
       ${actions}
-      <div id="diagram_wrap_${msgId}"></div>
+      <div id="media_wrap_${msgId}"></div>
     </div>
   `;
 
@@ -673,6 +800,7 @@ async function sendMessage() {
   document.getElementById('typingWrap').classList.add('active');
   document.getElementById('chatViewport').scrollTop = 999999;
 
+  const isVideoQuery = query.toLowerCase().includes('video') || query.toLowerCase().includes('documentary');
   const isDiagramQuery = query.toLowerCase().includes('diagram') || query.toLowerCase().includes('chart') || query.toLowerCase().includes('image');
 
   try {
@@ -688,9 +816,10 @@ async function sendMessage() {
     
     if (res.ok && data.status === 'success') {
       appendMessage(data.response, false);
-      if (isDiagramQuery) {
-        const lastMsgId = document.querySelector('.message-row.bot:last-child .bubble')?.id;
-        if (lastMsgId) generateDiagramImage(lastMsgId, query);
+      const lastMsgId = document.querySelector('.message-row.bot:last-child .bubble')?.id;
+      if (lastMsgId) {
+        if (isVideoQuery) generateExplainerVideo(lastMsgId, query);
+        else if (isDiagramQuery) generateDiagramImage(lastMsgId, query);
       }
     } else {
       appendMessage(`⚠️ **Note:** ${data.detail || 'Could not process query.'}`, false);
@@ -709,9 +838,9 @@ function sendQuery(q) {
   sendMessage();
 }
 
-// ── Generate AI Image Diagram (gemini-3.1-flash-lite-image) ──
+// ── 1. Generate AI Image Diagram (gemini-3.1-flash-lite-image) ──
 async function generateDiagramImage(msgId, promptQuery = null) {
-  const targetWrap = document.getElementById(`diagram_wrap_${msgId}`);
+  const targetWrap = document.getElementById(`media_wrap_${msgId}`);
   if (!targetWrap) return;
 
   const msgText = document.getElementById(msgId)?.innerText || '';
@@ -748,21 +877,160 @@ async function generateDiagramImage(msgId, promptQuery = null) {
           </div>
         </div>
       `;
-      showToast('AI Diagram Image generated successfully!');
-    } else {
-      targetWrap.innerHTML = `
-        <div class="diagram-image-card">
-          <div class="diagram-card-header" style="color:var(--cat-over)">Diagram Generation Error</div>
-          <p style="font-size:12px;color:var(--text-muted)">Image generation model did not return image. Details: ${result.error || 'Unknown error'}</p>
-        </div>`;
+      showToast('AI Diagram Image generated!');
     }
   } catch (err) {
-    targetWrap.innerHTML = `
-      <div class="diagram-image-card">
-        <div class="diagram-card-header" style="color:var(--cat-over)">Diagram Generation Error</div>
-        <p style="font-size:12px;color:var(--text-muted)">Could not connect to image model. Please try again.</p>
-      </div>`;
+    targetWrap.innerHTML = `<div style="color:var(--cat-over);font-size:12px;padding:8px">Image generation error</div>`;
   }
+}
+
+// ── 2. Generate AI Documentary Video Explainer (gemini-omni-flash-preview) ──
+async function generateExplainerVideo(msgId, promptQuery = null) {
+  const targetWrap = document.getElementById(`media_wrap_${msgId}`);
+  if (!targetWrap) return;
+
+  const msgText = document.getElementById(msgId)?.innerText || '';
+  targetWrap.innerHTML = `
+    <div class="video-studio-card">
+      <div class="video-studio-header">
+        <div class="video-studio-title">
+          <span>🎬 Generating AI Documentary Explainer Video...</span>
+          <span class="video-model-tag">gemini-omni-flash-preview</span>
+        </div>
+      </div>
+      <div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px">
+        ⏳ Directing 4-scene documentary reel with voiceover narration and subtitles...
+      </div>
+    </div>
+  `;
+
+  showToast('Generating AI Documentary Explainer Video...');
+
+  try {
+    const res = await fetch(`${API}/api/generate-video`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: promptQuery || msgText.slice(0, 300), text_context: msgText.slice(0, 1000) })
+    });
+    const result = await res.json();
+    const spec = result.video_spec || {};
+    const scenes = spec.scenes || [];
+
+    const studioId = 'video_' + Math.random().toString(36).substr(2, 9);
+    window[studioId] = { spec, activeIndex: 0, playing: false };
+
+    targetWrap.innerHTML = `
+      <div class="video-studio-card" id="card_${studioId}">
+        <div class="video-studio-header">
+          <div>
+            <div class="video-studio-title">
+              <span>🎬 ${escapeHtml(spec.video_title || 'Documentary Explainer')}</span>
+              <span class="video-model-tag">${spec.model_used || 'gemini-omni-flash-preview'}</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${escapeHtml(spec.synopsis || '')}</div>
+          </div>
+          <button class="act-btn" onclick="exportVideoScript('${studioId}')">📜 Export Script</button>
+        </div>
+
+        <!-- Cinema Screen -->
+        <div class="cinema-screen" id="screen_${studioId}">
+          <div class="cinema-screen-bg"></div>
+          <div class="visual-prompt-overlay" id="vprompt_${studioId}">
+            🎥 Scene 1 Prompt: ${escapeHtml(scenes[0]?.visual_prompt || '')}
+          </div>
+          <div class="subtitle-overlay" id="sub_${studioId}">
+            ${escapeHtml(scenes[0]?.subtitles || '')}
+          </div>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="video-controls-bar">
+          <div class="scene-tabs" id="tabs_${studioId}">
+            ${scenes.map((sc, idx) => `
+              <button class="scene-tab-btn ${idx === 0 ? 'active' : ''}" onclick="switchVideoScene('${studioId}', ${idx})">
+                Scene ${sc.scene_number}
+              </button>
+            `).join('')}
+          </div>
+
+          <div style="display:flex;gap:8px">
+            <button class="act-btn" onclick="playDocumentaryReel('${studioId}')">▶ Play Reel</button>
+            <button class="act-btn" onclick="pauseDocumentaryReel('${studioId}')">⏸ Pause</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    showToast('AI Documentary Explainer Video Ready!');
+  } catch (err) {
+    targetWrap.innerHTML = `<div style="color:var(--cat-over);font-size:12px;padding:8px">Video generation error</div>`;
+  }
+}
+
+function switchVideoScene(studioId, index) {
+  const studio = window[studioId];
+  if (!studio) return;
+  
+  studio.activeIndex = index;
+  const scenes = studio.spec.scenes || [];
+  const scene = scenes[index];
+  if (!scene) return;
+
+  document.getElementById(`vprompt_${studioId}`).innerHTML = `🎥 Scene ${scene.scene_number} Prompt: ${escapeHtml(scene.visual_prompt)}`;
+  document.getElementById(`sub_${studioId}`).innerHTML = escapeHtml(scene.subtitles || '');
+
+  // Update tabs active state
+  const tabs = document.querySelectorAll(`#tabs_${studioId} .scene-tab-btn`);
+  tabs.forEach((tab, i) => {
+    tab.classList.toggle('active', i === index);
+  });
+
+  // Speak narration
+  if (scene.narration) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(scene.narration);
+    window.speechSynthesis.speak(u);
+  }
+}
+
+function playDocumentaryReel(studioId) {
+  const studio = window[studioId];
+  if (!studio) return;
+
+  studio.playing = true;
+  let curr = studio.activeIndex || 0;
+  const scenes = studio.spec.scenes || [];
+
+  function playNextScene() {
+    if (!studio.playing || curr >= scenes.length) {
+      studio.playing = false;
+      return;
+    }
+    switchVideoScene(studioId, curr);
+    const dur = (scenes[curr].duration_sec || 5) * 1000;
+    curr++;
+    setTimeout(playNextScene, dur);
+  }
+  playNextScene();
+}
+
+function pauseDocumentaryReel(studioId) {
+  const studio = window[studioId];
+  if (studio) studio.playing = false;
+  window.speechSynthesis.cancel();
+  showToast('Paused playback');
+}
+
+function exportVideoScript(studioId) {
+  const studio = window[studioId];
+  if (!studio) return;
+  const jsonStr = JSON.stringify(studio.spec, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${studio.spec.video_title || 'documentary_script'}.json`;
+  a.click();
+  showToast('Documentary script exported!');
 }
 
 function copyText(id) {

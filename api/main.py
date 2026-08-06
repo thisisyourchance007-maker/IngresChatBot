@@ -759,6 +759,117 @@ Design style:
         }
     }
 
+class VideoRequest(BaseModel):
+    query: str
+    text_context: Optional[str] = ""
+
+@app.post("/api/generate-video", tags=["Chat"])
+async def generate_video(req: VideoRequest):
+    """
+    Generates a 4-scene AI Documentary Explainer Video spec with narration and subtitles
+    using gemini-omni-flash-preview.
+    """
+    import json
+    prompt = f"""You are an award-winning documentary director and AI video producer for India Groundwater resources.
+Create a cinematic 4-scene documentary video script with subtitles and narration for:
+Query: {req.query}
+Data snippet: {req.text_context[:800]}
+
+Respond STRICTLY with valid JSON only in this exact format:
+{{
+  "video_title": "Documentary Short Title",
+  "synopsis": "Engaging documentary overview",
+  "model_used": "gemini-omni-flash-preview",
+  "scenes": [
+    {{
+      "scene_number": 1,
+      "scene_title": "Scene 1: Title",
+      "visual_prompt": "Cinematic visual description of landscape, camera movement, and graphics",
+      "narration": "Documentary voiceover narration text for scene 1",
+      "subtitles": "Subtitle overlay text for scene 1",
+      "duration_sec": 5
+    }},
+    {{
+      "scene_number": 2,
+      "scene_title": "Scene 2: Title",
+      "visual_prompt": "Cinematic visual prompt describing data graphs and satellite imagery",
+      "narration": "Documentary voiceover narration text for scene 2",
+      "subtitles": "Subtitle overlay text for scene 2",
+      "duration_sec": 6
+    }},
+    {{
+      "scene_number": 3,
+      "scene_title": "Scene 3: Title",
+      "visual_prompt": "Cinematic visual prompt describing local impact and agricultural wells",
+      "narration": "Documentary voiceover narration text for scene 3",
+      "subtitles": "Subtitle overlay text for scene 3",
+      "duration_sec": 5
+    }},
+    {{
+      "scene_number": 4,
+      "scene_title": "Scene 4: Conclusion & Solutions",
+      "visual_prompt": "Cinematic visual prompt describing rainwater harvesting and conservation solutions",
+      "narration": "Documentary voiceover narration text for scene 4",
+      "subtitles": "Subtitle overlay text for scene 4",
+      "duration_sec": 6
+    }}
+  ]
+}}
+"""
+    try:
+        raw = await _call_gemini_async(prompt, timeout=25)
+        cleaned = raw.strip()
+        if "```json" in cleaned:
+            cleaned = cleaned.split("```json")[1].split("```")[0].strip()
+        elif "```" in cleaned:
+            cleaned = cleaned.split("```")[1].split("```")[0].strip()
+        
+        parsed = json.loads(cleaned)
+        parsed["model_used"] = "gemini-omni-flash-preview"
+        return {"status": "success", "video_spec": parsed}
+    except Exception as e:
+        log.error(f"Video generation error: {e}")
+        fallback_spec = {
+            "video_title": f"Documentary Explainer: {req.query[:40]}",
+            "synopsis": "An investigative AI documentary examining groundwater depletion and conservation efforts.",
+            "model_used": "gemini-omni-flash-preview",
+            "scenes": [
+                {
+                    "scene_number": 1,
+                    "scene_title": "Scene 1: The Crisis Unfolds",
+                    "visual_prompt": "Aerial drone shot of parched agricultural fields under intense sunlight, camera panning downward.",
+                    "narration": "Across India's key agricultural belts, groundwater depletion has reached critical levels.",
+                    "subtitles": "CRITICAL GROUNDWATER DEPLETION IN KEY BELTS",
+                    "duration_sec": 5
+                },
+                {
+                    "scene_number": 2,
+                    "scene_title": "Scene 2: Data & Extraction Metrics",
+                    "visual_prompt": "3D holographic map of India highlighting over-exploited districts in red and critical zones in orange.",
+                    "narration": "Over 100 districts report extraction rates exceeding 100% of annual replenishable recharge.",
+                    "subtitles": "100+ DISTRICTS EXCEED 100% RECHARGE EXTRACTION",
+                    "duration_sec": 6
+                },
+                {
+                    "scene_number": 3,
+                    "scene_title": "Scene 3: Agricultural Impact",
+                    "visual_prompt": "Close-up of deep tubewell pumps drawing water from receding subterranean aquifers.",
+                    "narration": "Farmers face growing costs as water tables decline by several meters annually.",
+                    "subtitles": "DECLINING WATER TABLES INCREASE PUMPING COSTS",
+                    "duration_sec": 5
+                },
+                {
+                    "scene_number": 4,
+                    "scene_title": "Scene 4: The Path to Sustainability",
+                    "visual_prompt": "Green crop fields with modern drip irrigation systems and rainwater recharge structures.",
+                    "narration": "Sustainable recharge, crop diversification, and micro-irrigation offer a pathway to recovery.",
+                    "subtitles": "SUSTAINABLE RECHARGE & MICRO-IRRIGATION SOLUTION",
+                    "duration_sec": 6
+                }
+            ]
+        }
+        return {"status": "fallback", "video_spec": fallback_spec, "error": str(e)}
+
 # ── Dev server ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
