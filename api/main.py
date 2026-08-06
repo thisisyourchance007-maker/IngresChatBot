@@ -382,22 +382,21 @@ class SearchRequest(BaseModel):
     max_stage: Optional[float] = None
 
 # ── Gemini (async) ────────────────────────────────────────────────────────────
-SYSTEM_PROMPT = """You are INGRES-AI, an expert assistant for India Groundwater Resource Estimation System.
+SYSTEM_PROMPT = """You are INGRES-AI, an expert assistant for India Groundwater Resource Estimation System (CGWB).
 You have access to the complete CGWB district-wise groundwater database covering 637 districts across 35 states and UTs of India.
-Answer questions about groundwater availability, extraction rates, and district classifications using the DATA provided below.
 
-Classification:
+Classification Standards:
 - Safe           : Stage of GW Development < 70%
 - Semi-Critical  : 70% to 90%
 - Critical       : 90% to 100%
 - Over-Exploited : > 100%
 
-Rules:
-1. ALWAYS use the DATA section — it contains real district records. Never say 'data not available' if records are shown.
-2. Cite specific numbers from the data (ham = hectare-meters).
-3. Use markdown bullets for multiple districts.
-4. Keep answers clear and structured.
-5. End with a one-line Insight: summary."""
+Formatting & Output Rules:
+1. ALWAYS present district data using clean Markdown Tables (| State | District | Stage GW (%) | Category |) or clean markdown bullet points.
+2. NEVER output raw ASCII text boxes, raw pandas string dumps, or code blocks (```) for data lists or comparison tables.
+3. Cite specific numbers clearly with bold formatting (e.g., **141.0%**).
+4. For multi-district or multi-state comparisons, group data cleanly with headings and Markdown tables.
+5. End every response with a clear **Key Insights:** summary section."""
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 MODELS      = ["gemini-3.5-flash-lite", "gemini-2.5-flash", "gemini-2.5-flash-lite"]  # verified working
@@ -593,13 +592,13 @@ async def chat(request: ChatRequest):
     if df_gw is not None:
         rows = _query_df(df_gw, query)
         if not rows.empty:
-            # Smart context building: for large result sets, include all but cap intelligently
-            if len(rows) > 30:
-                # Summarize as compact table for large states (e.g. UP=75 districts)
-                compact = rows[[c for c in ["state","district","stage_pct","category"] if c in rows.columns]]
-                context = compact.to_string(index=False)
-            else:
-                context = rows.to_string(index=False)
+            cols = [c for c in ["state","district","stage_pct","category","net_gw_availability_ham"] if c in rows.columns]
+            compact = rows[cols].head(35)
+            # Format as clean CSV table text for LLM
+            lines = ["State | District | Stage_Development_Pct | Category | Net_Availability_ham"]
+            for _, r in compact.iterrows():
+                lines.append(f"{r.get('state','')} | {r.get('district','')} | {r.get('stage_pct','')} | {r.get('category','')} | {r.get('net_gw_availability_ham','N/A')}")
+            context = "\n".join(lines)
         else:
             context = "No matching records found in the 637-district database."
 
@@ -627,9 +626,9 @@ async def chat(request: ChatRequest):
     # Cap total context at 12000 chars (covers ~80 districts comfortably)
     context_trimmed = context[:12000]
     if len(context) > 12000:
-        context_trimmed += f"\n[...{len(context)-12000} chars truncated — {len(rows) if not rows.empty else 0} total districts in result]"
+        context_trimmed += f"\n[...{len(context)-12000} chars truncated]"
 
-    prompt  = f"{SYSTEM_PROMPT}\n\n---\nDATA:\n{context_trimmed}\n---\n\nQUESTION: {query}\n\nANSWER:"
+    prompt  = f"{SYSTEM_PROMPT}\n\n---\nGROUNDWATER DATA:\n{context_trimmed}\n---\n\nUSER QUESTION: {query}\n\nRESPONSE:"
     history = _conversations.get(request.session_id, []) if request.session_id else []
     answer  = await _call_gemini_async(prompt, history, timeout=25)
 
@@ -696,38 +695,50 @@ class DiagramRequest(BaseModel):
 @app.post("/api/generate-diagram", tags=["Chat"])
 async def generate_diagram(req: DiagramRequest):
     """
-    Generates a Mermaid.js visual diagram (flowchart, pie chart, or mindmap)
-    explaining groundwater concepts or district distributions using Gemini AI.
+    Generates structured diagram data (Infographic items + clean Mermaid syntax)
+    explaining groundwater concepts or district distributions.
     """
-    prompt = f"""You are a diagram generator expert for INGRES India Groundwater system.
-Generate a valid Mermaid.js diagram (e.g. piechart, flowchart TD, or mindmap) for the following topic/data:
+    import json
+    prompt = f"""You are an expert hydrogeology visual designer for INGRES India Groundwater system.
+Generate a structured visualization breakdown for:
+User Query: {req.query}
+Data Snippet: {req.text_context[:800]}
 
-Topic/Query: {req.query}
-Data Context: {req.text_context[:1000] if req.text_context else 'India Groundwater Resource Estimation'}
-
-Rules:
-1. Output ONLY a valid Mermaid code block enclosed in ```mermaid and ```.
-2. Keep labels clean, concise, and free of special illegal characters.
-3. For distributions or proportions, use `pie title ...`.
-4. For processes, comparisons, or categorizations, use `graph TD` or `flowchart TD`.
-5. Do NOT include markdown text outside the code block."""
-
+Respond STRICTLY with valid JSON only (no markdown wrapping, no extra commentary):
+{{
+  "title": "Clear Diagram Title",
+  "subtitle": "Short analytical summary",
+  "items": [
+    {{"name": "District or Category 1", "value": 140.0, "unit": "%", "category": "Over-Exploited"}},
+    {{"name": "District or Category 2", "value": 85.0, "unit": "%", "category": "Semi-Critical"}},
+    {{"name": "District or Category 3", "value": 65.0, "unit": "%", "category": "Safe"}}
+  ],
+  "mermaid_code": "pie title Category Distribution\\n    \\"Safe\\" : 65\\n    \\"Over-Exploited\\" : 140"
+}}
+"""
     try:
         raw = await _call_gemini_async(prompt, timeout=20)
         cleaned = raw.strip()
-        if "```mermaid" in cleaned:
-            cleaned = cleaned.split("```mermaid")[1].split("```")[0].strip()
+        if "```json" in cleaned:
+            cleaned = cleaned.split("```json")[1].split("```")[0].strip()
         elif "```" in cleaned:
             cleaned = cleaned.split("```")[1].split("```")[0].strip()
-        return {"status": "success", "mermaid_code": cleaned, "raw": raw}
+        
+        parsed = json.loads(cleaned)
+        return {"status": "success", "data": parsed}
     except Exception as e:
         log.error(f"Diagram generation error: {e}")
-        fallback = """pie title Groundwater Stage Breakdown
-    "Safe (<70%)" : 421
-    "Semi-Critical (70-90%)" : 98
-    "Critical (90-100%)" : 45
-    "Over-Exploited (>100%)" : 73"""
-        return {"status": "fallback", "mermaid_code": fallback, "error": str(e)}
+        fallback_data = {
+            "title": "Groundwater Extraction Comparison",
+            "subtitle": "Stage of Development Summary",
+            "items": [
+                {"name": "Safe Districts (<70%)", "value": 65, "unit": "%", "category": "Safe"},
+                {"name": "Semi-Critical (70-90%)", "value": 85, "unit": "%", "category": "Semi-Critical"},
+                {"name": "Over-Exploited (>100%)", "value": 140, "unit": "%", "category": "Over-Exploited"}
+            ],
+            "mermaid_code": "pie title Groundwater Extraction Overview\n    \"Safe\" : 65\n    \"Semi-Critical\" : 85\n    \"Over-Exploited\" : 140"
+        }
+        return {"status": "fallback", "data": fallback_data, "error": str(e)}
 
 # ── Dev server ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
