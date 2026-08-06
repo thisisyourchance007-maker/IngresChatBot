@@ -695,50 +695,69 @@ class DiagramRequest(BaseModel):
 @app.post("/api/generate-diagram", tags=["Chat"])
 async def generate_diagram(req: DiagramRequest):
     """
-    Generates structured diagram data (Infographic items + clean Mermaid syntax)
-    explaining groundwater concepts or district distributions.
+    Generates a high-resolution visual infographic diagram image using gemini-3.1-flash-lite-image.
     """
-    import json
-    prompt = f"""You are an expert hydrogeology visual designer for INGRES India Groundwater system.
-Generate a structured visualization breakdown for:
-User Query: {req.query}
-Data Snippet: {req.text_context[:800]}
+    if not api_key:
+        raise HTTPException(503, "GEMINI_API_KEY not configured.")
 
-Respond STRICTLY with valid JSON only (no markdown wrapping, no extra commentary):
-{{
-  "title": "Clear Diagram Title",
-  "subtitle": "Short analytical summary",
-  "items": [
-    {{"name": "District or Category 1", "value": 140.0, "unit": "%", "category": "Over-Exploited"}},
-    {{"name": "District or Category 2", "value": 85.0, "unit": "%", "category": "Semi-Critical"}},
-    {{"name": "District or Category 3", "value": 65.0, "unit": "%", "category": "Safe"}}
-  ],
-  "mermaid_code": "pie title Category Distribution\\n    \\"Safe\\" : 65\\n    \\"Over-Exploited\\" : 140"
-}}
-"""
-    try:
-        raw = await _call_gemini_async(prompt, timeout=20)
-        cleaned = raw.strip()
-        if "```json" in cleaned:
-            cleaned = cleaned.split("```json")[1].split("```")[0].strip()
-        elif "```" in cleaned:
-            cleaned = cleaned.split("```")[1].split("```")[0].strip()
-        
-        parsed = json.loads(cleaned)
-        return {"status": "success", "data": parsed}
-    except Exception as e:
-        log.error(f"Diagram generation error: {e}")
-        fallback_data = {
-            "title": "Groundwater Extraction Comparison",
-            "subtitle": "Stage of Development Summary",
+    prompt = f"""Generate a high-quality, professional technical infographic diagram chart illustrating:
+Query: {req.query}
+Data: {req.text_context[:800]}
+
+Design style:
+- Modern dark-themed dashboard infographic chart.
+- Bold clear text labels, data percentage numbers, and color-coded bars/charts.
+- Clear title header and key legend."""
+
+    IMAGE_MODELS = [
+        "gemini-3.1-flash-lite-image",
+        "gemini-3.1-flash-image",
+        "gemini-2.5-flash-image"
+    ]
+
+    last_err = "unknown"
+
+    async with httpx.AsyncClient(timeout=30) as client:
+        for model in IMAGE_MODELS:
+            try:
+                url = f"{GEMINI_BASE}/{model}:generateContent?key={api_key}"
+                payload = {"contents": [{"parts": [{"text": prompt}]}]}
+                resp = await client.post(url, json=payload, headers={"Content-Type": "application/json"})
+                if resp.status_code == 200:
+                    candidates = resp.json().get("candidates", [])
+                    if candidates:
+                        parts = candidates[0].get("content", {}).get("parts", [])
+                        for part in parts:
+                            if "inlineData" in part:
+                                mime = part["inlineData"].get("mimeType", "image/jpeg")
+                                b64 = part["inlineData"].get("data", "")
+                                log.info(f"Generated diagram image with {model}")
+                                return {
+                                    "status": "success",
+                                    "model": model,
+                                    "image_url": f"data:{mime};base64,{b64}",
+                                    "prompt": prompt
+                                }
+                else:
+                    last_err = f"{model} status {resp.status_code}: {resp.text[:150]}"
+            except Exception as e:
+                last_err = f"{model} error: {e}"
+                log.warning(f"Image generation with {model} failed: {e}")
+
+    return {
+        "status": "fallback",
+        "error": f"Image model error: {last_err}",
+        "data": {
+            "title": f"Groundwater Analysis: {req.query[:40]}",
+            "subtitle": "Generated Hydrogeology Visual Breakdown",
             "items": [
-                {"name": "Safe Districts (<70%)", "value": 65, "unit": "%", "category": "Safe"},
-                {"name": "Semi-Critical (70-90%)", "value": 85, "unit": "%", "category": "Semi-Critical"},
-                {"name": "Over-Exploited (>100%)", "value": 140, "unit": "%", "category": "Over-Exploited"}
-            ],
-            "mermaid_code": "pie title Groundwater Extraction Overview\n    \"Safe\" : 65\n    \"Semi-Critical\" : 85\n    \"Over-Exploited\" : 140"
+                {"name": "Over-Exploited (>100%)", "value": 140, "unit": "%", "category": "Over-Exploited"},
+                {"name": "Critical (90-100%)", "value": 95, "unit": "%", "category": "Critical"},
+                {"name": "Semi-Critical (70-90%)", "value": 80, "unit": "%", "category": "Semi-Critical"},
+                {"name": "Safe (<70%)", "value": 55, "unit": "%", "category": "Safe"}
+            ]
         }
-        return {"status": "fallback", "data": fallback_data, "error": str(e)}
+    }
 
 # ── Dev server ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":

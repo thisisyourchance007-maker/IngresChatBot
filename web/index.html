@@ -3,194 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>INGRES AI — Enterprise Groundwater Intelligence</title>
-<meta name="description" content="Next-Gen AI Intelligence Platform & Visual Infographics for India Groundwater Resource Estimation System (INGRES)">
+<title>INGRES Groundwater Intelligence System</title>
+<meta name="description" content="India Groundwater Resource Estimation System (INGRES) Data & AI Intelligence Platform">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💧</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
 :root {
-  --bg-main: #070a14;
-  --bg-sidebar: rgba(13, 18, 36, 0.85);
-  --bg-card: rgba(21, 29, 52, 0.7);
-  --bg-card-hover: rgba(30, 41, 69, 0.8);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(56, 189, 248, 0.35);
+  --bg-slate: #0b0f19;
+  --bg-sidebar: #111827;
+  --bg-card: #1f2937;
+  --bg-card-hover: #374151;
+  --border-color: rgba(255, 255, 255, 0.08);
   --accent-cyan: #38bdf8;
   --accent-blue: #3b82f6;
-  --accent-indigo: #6366f1;
-  --accent-purple: #a855f7;
   --cat-safe: #10b981;
   --cat-semi: #f59e0b;
   --cat-crit: #f97316;
   --cat-over: #ef4444;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --radius-xl: 18px;
-  --radius-lg: 12px;
-  --radius-md: 8px;
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --radius: 12px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg-main);
-  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-slate);
+  color: var(--text-main);
   min-height: 100vh;
   overflow: hidden;
 }
 
-/* ── Ambient Background Mesh Glow ── */
-.mesh-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-.glow-spot {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.18;
-}
-.spot-1 { top: -15%; left: -10%; width: 55vw; height: 55vw; background: radial-gradient(circle, #3b82f6, #38bdf8); }
-.spot-2 { bottom: -15%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, #6366f1, #a855f7); }
-
-/* ── Main Layout ── */
-.app-container {
-  position: relative;
-  z-index: 1;
+.app-grid {
   display: grid;
-  grid-template-columns: 310px 1fr;
-  grid-template-rows: 64px 1fr;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 60px 1fr;
   height: 100vh;
-  width: 100vw;
 }
 
-/* ── Header Bar ── */
+/* Header */
 header {
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  background: rgba(11, 15, 29, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-glass);
+  background: #111827;
+  border-bottom: 1px solid var(--border-color);
 }
-.brand-group {
+.brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
-.brand-logo {
-  width: 38px;
-  height: 38px;
+.brand-icon {
+  width: 34px;
+  height: 34px;
   background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+  font-size: 18px;
 }
-.brand-info h1 {
-  font-size: 17px;
-  font-weight: 800;
+.brand-name {
+  font-size: 16px;
+  font-weight: 700;
   color: #fff;
-  letter-spacing: -0.01em;
 }
-.brand-info p {
+.brand-sub {
   font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  color: var(--text-muted);
 }
 
-.status-indicator {
+.status-pill {
   display: flex;
   align-items: center;
   gap: 8px;
   background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  padding: 5px 12px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 4px 12px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
   color: var(--cat-safe);
 }
-.pulse-dot {
+.status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--cat-safe);
-  box-shadow: 0 0 8px var(--cat-safe);
-  animation: pulse 2s infinite;
 }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-/* ── Sidebar ── */
+/* Sidebar */
 aside {
   background: var(--bg-sidebar);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid var(--border-glass);
+  border-right: 1px solid var(--border-color);
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
 }
-aside::-webkit-scrollbar { width: 4px; }
-aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-
-.sidebar-heading {
-  font-size: 10px;
-  font-weight: 800;
+.aside-title {
+  font-size: 11px;
+  font-weight: 700;
   color: var(--accent-cyan);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
 }
 
-.stat-widget {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  transition: all 0.25s;
+.metric-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 14px 16px;
 }
-.stat-widget:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-glow);
-}
-.stat-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
-.stat-value { font-size: 26px; font-weight: 800; color: #fff; margin: 4px 0 2px; }
-.stat-sub { font-size: 11px; color: var(--accent-cyan); }
+.metric-card:hover { border-color: rgba(56, 189, 248, 0.3); }
+.metric-label { font-size: 11px; color: var(--text-muted); }
+.metric-val { font-size: 24px; font-weight: 700; color: #fff; margin: 4px 0 2px; }
+.metric-sub { font-size: 11px; color: var(--accent-cyan); }
 
-.cat-breakdown-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
-.cat-breakdown-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
-.cat-left-side { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); }
-.cat-dot-marker { width: 8px; height: 8px; border-radius: 50%; }
+.cat-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.cat-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+.cat-left { display: flex; align-items: center; gap: 8px; color: var(--text-muted); }
+.cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-.chart-widget {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
+.chart-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
   padding: 14px;
 }
-.chart-widget h4 { font-size: 11px; color: var(--text-secondary); margin-bottom: 10px; font-weight: 600; }
+.chart-card h4 { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
 
-/* ── Main Chat Area ── */
+/* Main Chat */
 main {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px);
-  position: relative;
+  height: calc(100vh - 60px);
   overflow: hidden;
 }
 
@@ -201,172 +155,133 @@ main {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  scroll-behavior: smooth;
 }
-.chat-viewport::-webkit-scrollbar { width: 5px; }
-.chat-viewport::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 5px; }
+.chat-viewport::-webkit-scrollbar { width: 6px; }
+.chat-viewport::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 6px; }
 
-/* Welcome Card */
-.welcome-card {
-  max-width: 750px;
+/* Hero Welcome Card */
+.welcome-hero {
+  max-width: 720px;
   margin: 30px auto;
   text-align: center;
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glass);
-  border-radius: 20px;
-  padding: 36px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 32px;
 }
-.welcome-icon { font-size: 44px; margin-bottom: 12px; }
-.welcome-card h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-.welcome-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 540px; margin: 0 auto 20px; }
+.welcome-hero h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.welcome-hero p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-/* Message Groups */
+/* Messages */
 .message-row {
   display: flex;
-  gap: 14px;
-  max-width: 880px;
+  gap: 12px;
+  max-width: 860px;
   width: 100%;
-  animation: fadeIn 0.3s ease-out;
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
 .message-row.user { flex-direction: row-reverse; align-self: flex-end; }
-.avatar-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 15px;
   flex-shrink: 0;
 }
-.message-row.bot .avatar-icon { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); }
-.message-row.user .avatar-icon { background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple)); }
+.message-row.bot .avatar { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); }
+.message-row.user .avatar { background: #374151; }
 
-.message-body-wrap { max-width: 780px; width: 100%; }
+.message-content { max-width: 760px; width: 100%; }
 
-.message-bubble {
+.bubble {
   padding: 16px 20px;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius);
   font-size: 14.5px;
-  line-height: 1.75;
-  color: var(--text-primary);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-  word-break: break-word;
+  line-height: 1.7;
+  color: var(--text-main);
 }
-.message-row.bot .message-bubble {
+.message-row.bot .bubble {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  border-top-left-radius: 4px;
+  border: 1px solid var(--border-color);
+  border-top-left-radius: 2px;
 }
-.message-row.user .message-bubble {
-  background: linear-gradient(135deg, #1d4ed8, #0e7490);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top-right-radius: 4px;
-}
-
-/* ── Rich Markdown Typography Fixes ── */
-.message-bubble h1, .message-bubble h2, .message-bubble h3 {
+.message-row.user .bubble {
+  background: #2563eb;
   color: #fff;
-  font-weight: 700;
-  margin: 16px 0 8px;
+  border-top-right-radius: 2px;
 }
-.message-bubble h1 { font-size: 18px; border-bottom: 1px solid var(--border-glass); padding-bottom: 6px; }
-.message-bubble h2 { font-size: 16px; }
-.message-bubble h3 { font-size: 15px; }
-.message-bubble p { margin-bottom: 12px; }
-.message-bubble p:last-child { margin-bottom: 0; }
-.message-bubble ul, .message-bubble ol { padding-left: 20px; margin: 10px 0; }
-.message-bubble li { margin-bottom: 4px; }
-.message-bubble strong { color: #fff; font-weight: 700; }
 
-/* ── Markdown Glass Tables (NO MONOSPACE OVERFLOW BUGS) ── */
-.message-bubble table {
+/* Rich Markdown Typography */
+.bubble h1, .bubble h2, .bubble h3 { color: #fff; font-weight: 600; margin: 14px 0 8px; }
+.bubble h1 { font-size: 17px; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
+.bubble h2 { font-size: 15px; }
+.bubble h3 { font-size: 14px; }
+.bubble p { margin-bottom: 10px; }
+.bubble p:last-child { margin-bottom: 0; }
+.bubble ul, .bubble ol { padding-left: 20px; margin: 8px 0; }
+.bubble li { margin-bottom: 4px; }
+.bubble strong { color: #fff; font-weight: 600; }
+
+/* Markdown Clean Tables */
+.bubble table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 16px 0;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border-glass);
-  background: rgba(11, 17, 33, 0.7);
+  border-collapse: collapse;
+  margin: 14px 0;
   font-size: 13.5px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
 }
-.message-bubble th {
-  background: rgba(30, 41, 69, 0.9);
+.bubble th {
+  background: #111827;
   color: var(--accent-cyan);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.05em;
-  padding: 12px 16px;
+  padding: 10px 14px;
   text-align: left;
-  border-bottom: 1px solid var(--border-glass);
+  border-bottom: 1px solid var(--border-color);
 }
-.message-bubble td {
-  padding: 10px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  color: var(--text-primary);
+.bubble td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-.message-bubble tr:last-child td { border-bottom: none; }
-.message-bubble tr:hover td { background: rgba(255, 255, 255, 0.03); }
+.bubble tr:last-child td { border-bottom: none; }
+.bubble tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
-/* Code Blocks */
-.message-bubble pre {
-  background: rgba(7, 11, 22, 0.95);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
-  padding: 14px 18px;
-  overflow-x: auto;
-  margin: 14px 0;
-}
-.message-bubble code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--accent-cyan);
-}
-.message-bubble p code {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: #38bdf8;
-}
-
-/* Clean Category Badges (No Text Misalignment) */
-.badge-pill {
+/* Badges */
+.status-pill-tag {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 9px;
-  border-radius: 6px;
-  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
   font-weight: 600;
   vertical-align: middle;
-  line-height: 1.2;
 }
-.badge-pill.safe { background: rgba(16, 185, 129, 0.15); color: var(--cat-safe); border: 1px solid rgba(16, 185, 129, 0.3); }
-.badge-pill.semi { background: rgba(245, 158, 11, 0.15); color: var(--cat-semi); border: 1px solid rgba(245, 158, 11, 0.3); }
-.badge-pill.crit { background: rgba(249, 115, 22, 0.15); color: var(--cat-crit); border: 1px solid rgba(249, 115, 22, 0.3); }
-.badge-pill.over { background: rgba(239, 68, 68, 0.15); color: var(--cat-over); border: 1px solid rgba(239, 68, 68, 0.3); }
+.status-pill-tag.safe { background: rgba(16, 185, 129, 0.15); color: var(--cat-safe); }
+.status-pill-tag.semi { background: rgba(245, 158, 11, 0.15); color: var(--cat-semi); }
+.status-pill-tag.crit { background: rgba(249, 115, 22, 0.15); color: var(--cat-crit); }
+.status-pill-tag.over { background: rgba(239, 68, 68, 0.15); color: var(--cat-over); }
 
-/* ── Message Actions Bar ── */
-.message-actions {
+/* Message Actions */
+.msg-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 8px;
 }
-.action-btn {
+.act-btn {
   background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
-  padding: 5px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 5px 11px;
   font-size: 11.5px;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -374,151 +289,121 @@ main {
   transition: all 0.2s;
   font-family: inherit;
 }
-.action-btn:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-glow);
-  color: #fff;
+.act-btn:hover { background: #374151; color: #fff; }
+.act-btn.diagram-btn {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--accent-cyan);
 }
-.action-btn.diagram-btn {
-  background: rgba(99, 102, 241, 0.15);
-  border-color: rgba(99, 102, 241, 0.35);
-  color: #c084fc;
-}
-.action-btn.diagram-btn:hover {
-  background: rgba(99, 102, 241, 0.3);
-  color: #fff;
-  box-shadow: 0 0 14px rgba(99, 102, 241, 0.4);
-}
+.act-btn.diagram-btn:hover { background: rgba(56, 189, 248, 0.2); color: #fff; }
 
-/* ── Glass Infographic Diagram Card ($100M Visual Card) ── */
-.infographic-card {
+/* AI Diagram Image Card (Generated via gemini-3.1-flash-lite-image) */
+.diagram-image-card {
   margin-top: 14px;
-  background: rgba(11, 17, 33, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glow);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: #111827;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 16px;
+  animation: fadeIn 0.4s ease-out;
 }
-.infographic-header {
+.diagram-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-glass);
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-cyan);
 }
-.infographic-title { font-size: 14px; font-weight: 700; color: #fff; }
-.infographic-subtitle { font-size: 11px; color: var(--text-secondary); }
-
-/* Progress Infographic Items */
-.infographic-items { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
-.info-item { display: flex; flex-direction: column; gap: 4px; }
-.info-item-top { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
-.info-bar-bg { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; }
-.info-bar-fill { height: 100%; border-radius: 999px; transition: width 0.8s ease-out; }
-
-.mermaid-svg-container {
-  display: flex;
-  justify-content: center;
-  padding: 12px 0;
-  overflow-x: auto;
+.diagram-img-wrap {
+  text-align: center;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: #000;
 }
-.mermaid-svg-container svg { max-width: 100%; height: auto; }
+.diagram-img-wrap img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
 
-/* Typing Box */
-.typing-row {
+/* Typing Row */
+.typing-wrap {
   display: none;
   align-items: center;
   gap: 12px;
   padding-left: 32px;
   margin-bottom: 8px;
 }
-.typing-row.active { display: flex; }
-.typing-indicator {
+.typing-wrap.active { display: flex; }
+.dots {
   display: flex;
-  gap: 5px;
+  gap: 4px;
   padding: 12px 16px;
   background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
 }
-.typing-indicator span {
-  width: 7px;
-  height: 7px;
+.dots span {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent-cyan);
-  animation: pulseDot 1.4s infinite ease-in-out;
+  animation: bounce 1.2s infinite ease-in-out;
 }
-.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes pulseDot { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1.1);opacity:1} }
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,80%,100%{transform:scale(0.6)} 40%{transform:scale(1)} }
 
-/* ── Sleek Prompt Chips Bar ── */
-.prompt-bar-wrap {
+/* Prompt Chips Bar */
+.prompt-chips-wrap {
   padding: 8px 32px 4px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   overflow-x: auto;
-  z-index: 10;
 }
-.prompt-bar-wrap::-webkit-scrollbar { height: 0px; }
-.prompt-chip {
+.prompt-chips-wrap::-webkit-scrollbar { height: 0px; }
+.chip {
   background: var(--bg-card);
-  border: 1px solid var(--border-glass);
+  border: 1px solid var(--border-color);
   border-radius: 999px;
-  padding: 8px 16px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--text-primary);
+  padding: 7px 14px;
+  font-size: 12px;
+  color: var(--text-main);
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.25s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
 }
-.prompt-chip:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-glow);
-  color: #fff;
-  transform: translateY(-2px);
-}
-.prompt-chip.diagram {
-  background: rgba(99, 102, 241, 0.15);
-  border-color: rgba(99, 102, 241, 0.35);
-  color: #c084fc;
-}
+.chip:hover { background: #374151; border-color: var(--accent-cyan); }
+.chip.diagram-chip { background: rgba(56, 189, 248, 0.1); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3); }
 
-/* ── Input Panel ── */
+/* Input Panel */
 .input-panel {
-  padding: 12px 32px 20px;
-  background: rgba(8, 14, 28, 0.9);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border-glass);
+  padding: 12px 32px 18px;
+  background: #111827;
+  border-top: 1px solid var(--border-color);
 }
-.input-row-box {
+.input-box {
   display: flex;
   align-items: flex-end;
-  gap: 12px;
+  gap: 10px;
   background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: 16px;
-  padding: 10px 14px 10px 18px;
-  transition: all 0.25s;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px 12px 10px 16px;
 }
-.input-row-box:focus-within {
-  border-color: var(--border-glow);
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-}
+.input-box:focus-within { border-color: var(--accent-cyan); }
 
 #userInput {
   flex: 1;
   background: transparent;
   border: none;
   outline: none;
-  color: var(--text-primary);
+  color: var(--text-main);
   font-family: inherit;
-  font-size: 14.5px;
+  font-size: 14px;
   resize: none;
   max-height: 120px;
   line-height: 1.5;
@@ -526,9 +411,9 @@ main {
 #userInput::placeholder { color: var(--text-muted); }
 
 .send-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   border: none;
   background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
   color: #fff;
@@ -537,172 +422,150 @@ main {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.2s;
 }
-.send-btn:hover { transform: scale(1.06); box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4); }
-.send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-.send-btn svg { width: 18px; height: 18px; fill: currentColor; }
+.send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.send-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
-.input-caption {
+.input-note {
   font-size: 11px;
   color: var(--text-muted);
   margin-top: 8px;
   text-align: center;
 }
-.input-caption kbd {
-  background: rgba(255,255,255,0.08);
-  padding: 1px 5px;
-  border-radius: 4px;
-  color: var(--text-primary);
-}
 
 /* Toast */
-.toast-banner {
+.toast-bar {
   position: fixed;
-  bottom: 95px;
+  bottom: 90px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: rgba(15, 23, 42, 0.95);
+  background: #1f2937;
   border: 1px solid var(--accent-cyan);
   color: #fff;
-  padding: 8px 20px;
+  padding: 8px 18px;
   border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  font-size: 12px;
+  font-weight: 500;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s;
-  z-index: 999;
+  transition: all 0.25s;
+  z-index: 99;
 }
-.toast-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast-bar.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-@media(max-width: 900px) {
-  .app-container { grid-template-columns: 1fr; }
+@media(max-width: 850px) {
+  .app-grid { grid-template-columns: 1fr; }
   aside { display: none; }
   .chat-viewport { padding: 16px; }
-  .prompt-bar-wrap { padding: 8px 16px; }
+  .prompt-chips-wrap { padding: 8px 16px; }
   .input-panel { padding: 10px 16px 16px; }
 }
 </style>
 </head>
 <body>
 
-<div class="mesh-bg">
-  <div class="glow-spot spot-1"></div>
-  <div class="glow-spot spot-2"></div>
-</div>
-
-<div class="app-container">
+<div class="app-grid">
 
   <!-- Header -->
   <header>
-    <div class="brand-group">
-      <div class="brand-logo">💧</div>
-      <div class="brand-info">
-        <h1>INGRES AI</h1>
-        <p>Enterprise India Groundwater Intelligence System</p>
+    <div class="brand">
+      <div class="brand-icon">💧</div>
+      <div>
+        <div class="brand-name">INGRES AI</div>
+        <div class="brand-sub">India Groundwater Intelligence System</div>
       </div>
     </div>
-    <div class="status-indicator">
-      <span class="pulse-dot"></span>
-      <span id="statusText">Connected</span>
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      <span>Connected</span>
     </div>
   </header>
 
   <!-- Sidebar -->
   <aside>
-    <div class="sidebar-heading">National Database Metrics</div>
+    <div class="aside-title">National Groundwater Database</div>
 
-    <div class="stat-widget">
-      <div class="stat-label">Total Districts Covered</div>
-      <div class="stat-value" id="totalDistricts">637</div>
-      <div class="stat-sub" id="totalStates">35 States & UTs</div>
+    <div class="metric-card">
+      <div class="metric-label">Monitored Districts</div>
+      <div class="metric-val" id="totalDistricts">637</div>
+      <div class="metric-sub" id="totalStates">35 States & UTs</div>
     </div>
 
-    <div class="stat-widget">
-      <div class="stat-label">National Stage of Development</div>
-      <div class="stat-value" id="avgStage">60.1%</div>
-      <div class="stat-sub">National Average</div>
+    <div class="metric-card">
+      <div class="metric-label">National Stage of Development</div>
+      <div class="metric-val" id="avgStage">60.1%</div>
+      <div class="metric-sub">National Average</div>
     </div>
 
-    <div class="stat-widget">
-      <div class="stat-label">Category Distribution</div>
-      <div class="cat-breakdown-list" id="catList">
-        <div style="color:var(--text-secondary);font-size:12px">Loading metrics…</div>
+    <div class="metric-card">
+      <div class="metric-label">Category Breakdown</div>
+      <div class="cat-list" id="catList">
+        <div style="color:var(--text-muted);font-size:12px">Loading metrics…</div>
       </div>
     </div>
 
-    <div class="chart-widget">
-      <h4>Stage Breakdown</h4>
-      <canvas id="distChart" height="150"></canvas>
+    <div class="chart-card">
+      <h4>Stage Distribution</h4>
+      <canvas id="distChart" height="140"></canvas>
     </div>
   </aside>
 
-  <!-- Chat Content -->
+  <!-- Main Chat viewport -->
   <main>
     <div class="chat-viewport" id="chatViewport">
       
-      <div class="welcome-card" id="welcomeCard">
-        <div class="welcome-icon">🌊</div>
+      <div class="welcome-hero" id="welcomeHero">
         <h2>INGRES Groundwater Intelligence</h2>
-        <p>Analyze groundwater availability, compare state extraction rates, or generate visual hydrogeology infographic diagrams.</p>
+        <p>Analyze district-wise groundwater data across India or request custom AI visual diagram charts generated via Gemini Flash Image AI.</p>
       </div>
 
     </div>
 
-    <!-- Typing Row -->
-    <div class="typing-row" id="typingRow">
-      <div class="avatar-icon" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));">🤖</div>
-      <div class="typing-indicator">
-        <span></span><span></span><span></span>
-      </div>
+    <!-- Typing indicator -->
+    <div class="typing-wrap" id="typingWrap">
+      <div class="avatar">🤖</div>
+      <div class="dots"><span></span><span></span><span></span></div>
     </div>
 
-    <!-- Quick Prompts Bar (Moved from Sidebar) -->
-    <div class="prompt-bar-wrap">
-      <button class="prompt-chip" onclick="sendPrompt('Which districts in India are over-exploited?')">🔴 Over-exploited districts</button>
-      <button class="prompt-chip" onclick="sendPrompt('What is the groundwater status in Punjab?')">📍 Punjab status</button>
-      <button class="prompt-chip" onclick="sendPrompt('Which states have the highest stage of groundwater development?')">📊 Top stressed states</button>
-      <button class="prompt-chip" onclick="sendPrompt('Which districts are safe in Andhra Pradesh?')">🟢 Safe districts in AP</button>
-      <button class="prompt-chip" onclick="sendPrompt('Compare groundwater status of Bihar and Uttar Pradesh')">⚖️ Bihar vs UP</button>
-      <button class="prompt-chip" onclick="sendPrompt('Which districts need urgent attention for groundwater conservation?')">🚨 Urgent attention needed</button>
-      <button class="prompt-chip diagram" onclick="sendPrompt('Generate a diagram showing Punjab vs Haryana groundwater extraction')">🎨 Generate Diagram: Punjab vs Haryana</button>
+    <!-- Prompt Chips Bar -->
+    <div class="prompt-chips-wrap">
+      <button class="chip" onclick="sendQuery('Which districts in India are over-exploited?')">🔴 Over-exploited districts</button>
+      <button class="chip" onclick="sendQuery('What is the groundwater status in Punjab?')">📍 Punjab status</button>
+      <button class="chip" onclick="sendQuery('Which states have the highest stage of groundwater development?')">📊 Top stressed states</button>
+      <button class="chip" onclick="sendQuery('Which districts are safe in Andhra Pradesh?')">🟢 Safe districts in AP</button>
+      <button class="chip" onclick="sendQuery('Compare groundwater status of Bihar and Uttar Pradesh')">⚖️ Bihar vs UP</button>
+      <button class="chip diagram-chip" onclick="sendQuery('Generate a diagram showing Punjab vs Haryana groundwater extraction')">🎨 Generate Diagram Image: Punjab vs Haryana</button>
     </div>
 
-    <!-- Input Box -->
+    <!-- Input Panel -->
     <div class="input-panel">
-      <div class="input-row-box">
-        <textarea id="userInput" rows="1" placeholder="Ask about groundwater availability, district data, or request a visual diagram…" maxlength="1000"></textarea>
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send Message">
-          <svg viewBox="0 0 24 24">
-            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-          </svg>
+      <div class="input-box">
+        <textarea id="userInput" rows="1" placeholder="Ask about groundwater availability, district data, or request a visual diagram image…" maxlength="1000"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
       </div>
-      <div class="input-caption">
-        Press <kbd>Enter</kbd> to send • Press <kbd>Shift + Enter</kbd> for line break • Powered by Gemini 3.5 & CGWB Database
+      <div class="input-note">
+        Press <kbd style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:3px;color:#fff">Enter</kbd> to send • Powered by Gemini 3.5 & gemini-3.1-flash-lite-image
       </div>
     </div>
 
   </main>
 </div>
 
-<div class="toast-banner" id="toastBanner">Notification</div>
+<div class="toast-bar" id="toastBar">Notification</div>
 
 <script>
-mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
-
 const API = '';
 const SESSION = 'session_' + Math.random().toString(36).slice(2);
-let isFirstMessage = true;
+let isFirst = true;
 let distChart = null;
 
 async function init() {
   try {
     const r = await fetch(`${API}/health`, { signal: AbortSignal.timeout(5000) });
     if (r.ok) loadStats();
-  } catch { }
+  } catch {}
 }
 
 async function loadStats() {
@@ -717,16 +580,15 @@ async function loadStats() {
 
     const cats = d.categories ?? {};
     const colors = { Safe:'var(--cat-safe)', 'Semi-Critical':'var(--cat-semi)', Critical:'var(--cat-crit)', 'Over-Exploited':'var(--cat-over)' };
-    const icons  = { Safe:'🟢', 'Semi-Critical':'🟡', Critical:'🟠', 'Over-Exploited':'🔴' };
-    const total  = Object.values(cats).reduce((a,b)=>a+b,0) || 1;
+    const total = Object.values(cats).reduce((a,b)=>a+b,0) || 1;
 
     document.getElementById('catList').innerHTML = Object.entries(cats).map(([k,v])=>`
-      <div class="cat-breakdown-row">
-        <div class="cat-left-side">
-          <span class="cat-dot-marker" style="background:${colors[k]||'#888'}"></span>
-          <span>${icons[k]||''} ${k}</span>
+      <div class="cat-row">
+        <div class="cat-left">
+          <span class="cat-dot" style="background:${colors[k]||'#888'}"></span>
+          <span>${k}</span>
         </div>
-        <div style="font-weight:700;color:#fff">${v} <span style="color:var(--text-secondary);font-size:10px">(${Math.round(v/total*100)}%)</span></div>
+        <div style="font-weight:600;color:#fff">${v} <span style="color:var(--text-muted);font-size:10px">(${Math.round(v/total*100)}%)</span></div>
       </div>`).join('');
 
     const dist = d.stage_distribution ?? {};
@@ -738,60 +600,60 @@ async function loadStats() {
         datasets: [{
           data: Object.values(dist),
           backgroundColor: ['#10b981','#34d399','#f59e0b','#f97316','#ef4444','#991b1b'],
-          borderRadius: 6, borderSkipped: false
+          borderRadius: 4, borderSkipped: false
         }]
       },
       options: {
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color:'#94a3b8', font:{size:9} }, grid: { color:'rgba(255,255,255,0.04)' } },
-          y: { ticks: { color:'#94a3b8', font:{size:9} }, grid: { color:'rgba(255,255,255,0.04)' } }
+          x: { ticks: { color:'#9ca3af', font:{size:9} }, grid: { color:'rgba(255,255,255,0.03)' } },
+          y: { ticks: { color:'#9ca3af', font:{size:9} }, grid: { color:'rgba(255,255,255,0.03)' } }
         }
       }
     });
-  } catch (e) { }
+  } catch (e) {}
 }
 
 function appendMessage(text, isUser) {
-  if (isFirstMessage && isUser) {
-    document.getElementById('welcomeCard')?.remove();
-    isFirstMessage = false;
+  if (isFirst && isUser) {
+    document.getElementById('welcomeHero')?.remove();
+    isFirst = false;
   }
 
   const viewport = document.getElementById('chatViewport');
-  const msgRow = document.createElement('div');
-  msgRow.className = `message-row ${isUser ? 'user' : 'bot'}`;
+  const row = document.createElement('div');
+  row.className = `message-row ${isUser ? 'user' : 'bot'}`;
   
   const msgId = 'msg_' + Math.random().toString(36).substr(2, 9);
   
-  let htmlContent = isUser ? escapeHtml(text) : marked.parse(text);
+  let formatted = isUser ? escapeHtml(text) : marked.parse(text);
   
-  // Format badges safely without breaking html tags
+  // Format Category Pills cleanly
   if (!isUser) {
-    htmlContent = htmlContent
-      .replace(/(?<![<"'])Over-Exploited(?![">])/g, '<span class="badge-pill over">🔴 Over-Exploited</span>')
-      .replace(/(?<![<"'])Semi-Critical(?![">])/g, '<span class="badge-pill semi">🟡 Semi-Critical</span>')
-      .replace(/(?<![<"'])Critical(?![">])/g, '<span class="badge-pill crit">🟠 Critical</span>')
-      .replace(/(?<![<"'])Safe(?![">])/g, '<span class="badge-pill safe">🟢 Safe</span>');
+    formatted = formatted
+      .replace(/Over-Exploited/g, '<span class="status-pill-tag over">🔴 Over-Exploited</span>')
+      .replace(/Semi-Critical/g, '<span class="status-pill-tag semi">🟡 Semi-Critical</span>')
+      .replace(/Critical(?!<\/span>)/g, '<span class="status-pill-tag crit">🟠 Critical</span>')
+      .replace(/Safe/g, '<span class="status-pill-tag safe">🟢 Safe</span>');
   }
 
   const actions = !isUser ? `
-    <div class="message-actions">
-      <button class="action-btn" onclick="copyText('${msgId}')">📋 Copy Answer</button>
-      <button class="action-btn diagram-btn" onclick="generateDiagramForMsg('${msgId}')">🎨 Generate AI Diagram</button>
-      <button class="action-btn" onclick="speakText('${msgId}')">🔊 Read Aloud</button>
+    <div class="msg-actions">
+      <button class="act-btn" onclick="copyText('${msgId}')">📋 Copy</button>
+      <button class="act-btn diagram-btn" onclick="generateDiagramImage('${msgId}')">🎨 Generate AI Diagram Image</button>
+      <button class="act-btn" onclick="speakText('${msgId}')">🔊 Read</button>
     </div>` : '';
 
-  msgRow.innerHTML = `
-    <div class="avatar-icon">${isUser ? '👤' : '🤖'}</div>
-    <div class="message-body-wrap">
-      <div class="message-bubble" id="${msgId}">${htmlContent}</div>
+  row.innerHTML = `
+    <div class="avatar">${isUser ? '👤' : '🤖'}</div>
+    <div class="message-content">
+      <div class="bubble" id="${msgId}">${formatted}</div>
       ${actions}
       <div id="diagram_wrap_${msgId}"></div>
     </div>
   `;
 
-  viewport.appendChild(msgRow);
+  viewport.appendChild(row);
   viewport.scrollTop = viewport.scrollHeight;
 }
 
@@ -808,10 +670,10 @@ async function sendMessage() {
   input.value = '';
   input.style.height = 'auto';
   document.getElementById('sendBtn').disabled = true;
-  document.getElementById('typingRow').classList.add('active');
+  document.getElementById('typingWrap').classList.add('active');
   document.getElementById('chatViewport').scrollTop = 999999;
 
-  const isDiagramQuery = query.toLowerCase().includes('diagram') || query.toLowerCase().includes('chart');
+  const isDiagramQuery = query.toLowerCase().includes('diagram') || query.toLowerCase().includes('chart') || query.toLowerCase().includes('image');
 
   try {
     const res = await fetch(`${API}/chat`, {
@@ -821,20 +683,20 @@ async function sendMessage() {
       signal: AbortSignal.timeout(45000)
     });
     
-    document.getElementById('typingRow').classList.remove('active');
+    document.getElementById('typingWrap').classList.remove('active');
     const data = await res.json();
     
     if (res.ok && data.status === 'success') {
       appendMessage(data.response, false);
       if (isDiagramQuery) {
-        const lastMsgId = document.querySelector('.message-row.bot:last-child .message-bubble')?.id;
-        if (lastMsgId) generateDiagramForMsg(lastMsgId, query);
+        const lastMsgId = document.querySelector('.message-row.bot:last-child .bubble')?.id;
+        if (lastMsgId) generateDiagramImage(lastMsgId, query);
       }
     } else {
       appendMessage(`⚠️ **Note:** ${data.detail || 'Could not process query.'}`, false);
     }
   } catch (err) {
-    document.getElementById('typingRow').classList.remove('active');
+    document.getElementById('typingWrap').classList.remove('active');
     appendMessage('❌ **Connection Error:** Server offline or unreachable.', false);
   }
 
@@ -842,118 +704,87 @@ async function sendMessage() {
   input.focus();
 }
 
-function sendPrompt(q) {
+function sendQuery(q) {
   document.getElementById('userInput').value = q;
   sendMessage();
 }
 
-// ── $100M Infographic Diagram Renderer ──
-async function generateDiagramForMsg(msgId, queryPrompt = null) {
-  const targetContainer = document.getElementById(`diagram_wrap_${msgId}`);
-  if (!targetContainer) return;
+// ── Generate AI Image Diagram (gemini-3.1-flash-lite-image) ──
+async function generateDiagramImage(msgId, promptQuery = null) {
+  const targetWrap = document.getElementById(`diagram_wrap_${msgId}`);
+  if (!targetWrap) return;
 
   const msgText = document.getElementById(msgId)?.innerText || '';
-  targetContainer.innerHTML = `
-    <div class="infographic-card">
-      <div class="infographic-header">
-        <div class="infographic-title">✨ Nano Flash AI Diagram Generator</div>
-        <div class="infographic-subtitle">Synthesizing visual hydrogeology graphic…</div>
+  targetWrap.innerHTML = `
+    <div class="diagram-image-card">
+      <div class="diagram-card-header">
+        <span>🎨 Generating AI Image Diagram (gemini-3.1-flash-lite-image)...</span>
       </div>
-      <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:13px">
-        ⏳ Generating visual diagram schema...
+      <div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px">
+        ⏳ Synthesizing visual diagram image with Gemini Flash Image model...
       </div>
     </div>
   `;
 
-  showToast('Generating AI visual diagram...');
+  showToast('Generating AI diagram image...');
 
   try {
     const res = await fetch(`${API}/api/generate-diagram`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: queryPrompt || msgText.slice(0, 300), text_context: msgText.slice(0, 1000) })
+      body: JSON.stringify({ query: promptQuery || msgText.slice(0, 300), text_context: msgText.slice(0, 1000) })
     });
     const result = await res.json();
-    const data = result.data || {};
 
-    const items = data.items || [];
-    const colorMap = { 'Safe': '#10b981', 'Semi-Critical': '#f59e0b', 'Critical': '#f97316', 'Over-Exploited': '#ef4444' };
-
-    let itemsHtml = items.map(item => {
-      const val = item.value || 0;
-      const color = colorMap[item.category] || '#38bdf8';
-      const pct = Math.min(val, 250) / 2.5;
-      return `
-        <div class="info-item">
-          <div class="info-item-top">
-            <span>${item.name}</span>
-            <span style="color:${color}">${val}% (${item.category || ''})</span>
+    if (result.status === 'success' && result.image_url) {
+      targetWrap.innerHTML = `
+        <div class="diagram-image-card">
+          <div class="diagram-card-header">
+            <span>🎨 Generated Infographic Diagram (${result.model || 'gemini-3.1-flash-lite-image'})</span>
+            <a href="${result.image_url}" download="groundwater_diagram.jpg" class="act-btn" style="text-decoration:none">💾 Download Image</a>
           </div>
-          <div class="info-bar-bg">
-            <div class="info-bar-fill" style="width:${pct}%;background:${color}"></div>
+          <div class="diagram-img-wrap">
+            <img src="${result.image_url}" alt="AI Generated Groundwater Diagram" />
           </div>
         </div>
       `;
-    }).join('');
-
-    const diagramId = 'diagram_svg_' + Math.random().toString(36).substr(2, 9);
-    
-    targetContainer.innerHTML = `
-      <div class="infographic-card">
-        <div class="infographic-header">
-          <div>
-            <div class="infographic-title">🎨 ${data.title || 'Groundwater Hydrogeology Infographic'}</div>
-            <div class="infographic-subtitle">${data.subtitle || 'Stage of Groundwater Development Analysis'}</div>
-          </div>
-          <button class="action-btn" onclick="copyText('${diagramId}')">📋 Copy Data</button>
-        </div>
-        
-        <div class="infographic-items">
-          ${itemsHtml}
-        </div>
-
-        ${data.mermaid_code ? `
-        <div class="mermaid-svg-container" id="${diagramId}">
-          <pre class="mermaid">${escapeHtml(data.mermaid_code)}</pre>
-        </div>` : ''}
-      </div>
-    `;
-
-    if (data.mermaid_code) {
-      try {
-        await mermaid.run({ nodes: [document.querySelector(`#${diagramId} .mermaid`)] });
-      } catch(me) {}
+      showToast('AI Diagram Image generated successfully!');
+    } else {
+      targetWrap.innerHTML = `
+        <div class="diagram-image-card">
+          <div class="diagram-card-header" style="color:var(--cat-over)">Diagram Generation Error</div>
+          <p style="font-size:12px;color:var(--text-muted)">Image generation model did not return image. Details: ${result.error || 'Unknown error'}</p>
+        </div>`;
     }
-    showToast('Diagram generated successfully!');
   } catch (err) {
-    targetContainer.innerHTML = `
-      <div class="infographic-card">
-        <div class="infographic-header" style="color:var(--cat-over)">Diagram Generation Error</div>
-        <p style="font-size:12px;color:var(--text-secondary)">Could not generate visual diagram. Please try again.</p>
+    targetWrap.innerHTML = `
+      <div class="diagram-image-card">
+        <div class="diagram-card-header" style="color:var(--cat-over)">Diagram Generation Error</div>
+        <p style="font-size:12px;color:var(--text-muted)">Could not connect to image model. Please try again.</p>
       </div>`;
   }
 }
 
-function copyText(elemId) {
-  const txt = document.getElementById(elemId)?.innerText || '';
+function copyText(id) {
+  const txt = document.getElementById(id)?.innerText || '';
   navigator.clipboard.writeText(txt);
   showToast('Copied to clipboard!');
 }
 
-function speakText(elemId) {
-  const txt = document.getElementById(elemId)?.innerText || '';
+function speakText(id) {
+  const txt = document.getElementById(id)?.innerText || '';
   if (!txt) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(txt.slice(0, 350));
   window.speechSynthesis.speak(utterance);
-  showToast('Reading response aloud...');
+  showToast('Reading response...');
 }
 
 function showToast(msg) {
-  const banner = document.getElementById('toastBanner');
-  banner.textContent = msg;
-  banner.classList.add('show');
-  setTimeout(() => banner.classList.remove('show'), 2500);
+  const bar = document.getElementById('toastBar');
+  bar.textContent = msg;
+  bar.classList.add('show');
+  setTimeout(() => bar.classList.remove('show'), 2500);
 }
 
 document.getElementById('userInput').addEventListener('input', function() {
